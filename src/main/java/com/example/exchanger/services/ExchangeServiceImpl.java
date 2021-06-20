@@ -23,15 +23,13 @@ public class ExchangeServiceImpl implements IExchangeService {
         + "&base="
         + from + "&symbols=" + to;
     double convertedAmount = 0.0;
-    try {
+   
       ExchangerResponse response
           = restTemplate.getForObject(url, ExchangerResponse.class);
       assert response != null;
       double conversionRate = response.getRates().get(to);
       convertedAmount = amount * conversionRate;
-    } catch (Exception e) {
-      log.error(e.getMessage());
-    }
+   
     Locale locale = getLocalesFromIso(to);
     String convertedCurrency = NumberFormat.getCurrencyInstance(locale).format(convertedAmount);
     CurrencyExchangerResponse currencyExchangerResponse = new CurrencyExchangerResponse();
